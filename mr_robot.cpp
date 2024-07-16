@@ -1,3 +1,4 @@
+#include <M5Stack.h>
 #include <WiFi.h>
 #include <SD.h>
 #include <SPI.h>
@@ -80,6 +81,8 @@ void setup() {
     esp_wifi_set_promiscuous_rx_cb(&sniffer);
 
     // Start WiFi scanning and channel hopping
+    WiFi.scanNetworks(true, 10); // Scan duration 10 seconds
+    M5.Lcd.println("Scanning networks...");
     hopToNextChannel(); // Start channel hopping
 
     M5.Lcd.println("Sniffer initialized.");
@@ -193,7 +196,7 @@ void hopToNextChannel() {
 void showBootDisplay() {
     M5.Lcd.fillScreen(TFT_BLACK); // Clear screen
     M5.Lcd.setTextColor(TFT_RED);
-    M5.Lcd.setTextSize(4);
+    M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(20, 100);
     M5.Lcd.println("Mr. Robot");
     delay(2000); // Display "Mr. Robot" for 2 seconds
