@@ -193,7 +193,7 @@ void hopToNextChannel() {
 void showBootDisplay() {
     M5.Lcd.fillScreen(TFT_BLACK); // Clear screen
     M5.Lcd.setTextColor(TFT_RED);
-    M5.Lcd.setTextSize(2);
+    M5.Lcd.setTextSize(4);
     M5.Lcd.setCursor(20, 100);
     M5.Lcd.println("Mr. Robot");
     delay(2000); // Display "Mr. Robot" for 2 seconds
