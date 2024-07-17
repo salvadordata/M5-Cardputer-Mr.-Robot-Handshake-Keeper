@@ -1,10 +1,10 @@
-#include <M5Stack.h>
 #include <WiFi.h>
 #include <SD.h>
 #include <SPI.h>
 #include <esp_wifi.h>
 #include <Wire.h>
 #include <RTClib.h>
+#include <M5Stack.h> // Make sure you have the correct library for M5Stack
 
 #define SD_CS_PIN 4
 #define MAX_BUFFER_SIZE 16384 // Increased buffer size
@@ -81,8 +81,6 @@ void setup() {
     esp_wifi_set_promiscuous_rx_cb(&sniffer);
 
     // Start WiFi scanning and channel hopping
-    WiFi.scanNetworks(true, 10); // Scan duration 10 seconds
-    M5.Lcd.println("Scanning networks...");
     hopToNextChannel(); // Start channel hopping
 
     M5.Lcd.println("Sniffer initialized.");
