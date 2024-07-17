@@ -4,12 +4,13 @@
 #include <esp_wifi.h>
 #include <Wire.h>
 #include <RTClib.h>
-#include <M5Stack.h> // Make sure you have the correct library for M5Stack
+#include <M5Stack.h> // Ensure this library is installed for M5Stack support
 
 #define SD_CS_PIN 4
 #define MAX_BUFFER_SIZE 16384 // Increased buffer size
 #define WIFI_CHANNEL_HOP_INTERVAL 10 // Interval for channel hopping in seconds
 
+// Ensure the struct Network is declared before use
 struct Network {
     String ssid;
     bool pwned;
