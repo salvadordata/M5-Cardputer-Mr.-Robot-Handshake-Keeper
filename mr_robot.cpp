@@ -6,11 +6,6 @@
 #include <RTClib.h>
 #include <M5Stack.h> // Ensure this library is installed for M5Stack support
 
-#define SD_CS_PIN 4
-#define MAX_BUFFER_SIZE 16384 // Increased buffer size
-#define WIFI_CHANNEL_HOP_INTERVAL 10 // Interval for channel hopping in seconds
-
-// Ensure the struct Network is declared before use
 struct Network {
     String ssid;
     bool pwned;
@@ -26,6 +21,19 @@ int channels[] = {1, 6, 11}; // Channels to hop through
 int numChannels = sizeof(channels) / sizeof(channels[0]);
 
 RTC_DS3231 rtc;
+
+static esp_wifi_promiscuous_filter_t filter = {
+    .filter_mask = WIFI_PROMIS_FILTER_MASK_MGMT | WIFI_PROMIS_FILTER_MASK_DATA
+};
+
+void sniffer(void* buf, wifi_promiscuous_pkt_type_t type);
+bool isEAPOLPacket(wifi_ieee80211_mac_hdr_t *hdr);
+void addPacketToBuffer(const uint8_t *payload, int len);
+void flushBufferToFile();
+void displayNetworkStatus();
+void selectNetwork(int networkNumber);
+void hopToNextChannel();
+void showBootDisplay();
 
 void setup() {
     M5.begin();
@@ -98,10 +106,6 @@ void loop() {
         lastChannelHopTime = millis();
     }
 }
-
-static esp_wifi_promiscuous_filter_t filter = {
-    .filter_mask = WIFI_PROMIS_FILTER_MASK_MGMT | WIFI_PROMIS_FILTER_MASK_DATA
-};
 
 void sniffer(void* buf, wifi_promiscuous_pkt_type_t type) {
     wifi_promiscuous_pkt_t *pkt = (wifi_promiscuous_pkt_t *)buf;
